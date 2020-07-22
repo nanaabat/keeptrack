@@ -39,44 +39,52 @@ ebay_auction_page = soup(ebay_auction_html, "html.parser")
 
 #printing how many items are here
 ebay_auction_products = ebay_auction_page.findAll("div", {"class": "s-item__wrapper clearfix" })
-print(len(ebay_auction_products))
+print("Length: ", len(ebay_auction_products))
 
 #ebay_products = ebay_page.findAll("div", {"class" : "s-item__wrapper clearfix"})
 #print(len(ebay_products))
 
 
 
-product = ebay_auction_products[0]
-print("\nProduct Name: " + product.div.img["alt"]) #name of the products
+#product = ebay_auction_products[0]
+#print("\nProduct Name: " + product.div.img["alt"]) #name of the products
 
 #subclass title of the product
-product_sub_title = product.findAll("div", {"class": "s-item__subtitle"})
-print("Subtitle: " + product_sub_title[0].text)
+#product_sub_title = product.findAll("div", {"class": "s-item__subtitle"})
+#print("Subtitle: " + product_sub_title[0].text)
 
 #price of the products now
-price_of_product = product.findAll("span", {"class" : "s-item__price"})
-print("Price: " + price_of_product[0].text)
+#price_of_product = product.findAll("span", {"class" : "s-item__price"})
+#print("Price: " + price_of_product[0].text)
 
-rating = product.findAll("div", {"class": "s-item__reviews"})
-print("Ratings: " + rating[0].text)
+#rating = product.findAll("div", {"class": "s-item__reviews"})
+#print("Ratings: " + rating[0].text)
 
-bids_now  = product.findAll("span", {"class": "s-item__bids s-item__bidCount"})
-for i in range(len(bids_now)):
-    print("Bids Count: " + bids_now[i].text)
+##for i in range(len(bids_now)):
+#    print("Bids Count: " + bids_now[i].text)
 
 #how many days left for the bid to be done
-days_left = product.findAll("span" , {"class" : "s-item__time-left"})
+#days_left = product.findAll("span" , {"class" : "s-item__time-left"})
 
-for j in range(len(days_left)):
-    print("Days Left For Bids to End: " +  days_left[j].text)
+#for j in range(len(days_left)):
+#    print("Days Left For Bids to End: " +  days_left[j].text)
 
-date = product.findAll("span", {"class": "s-item__time-end"})
-for h in range(len(date)):
-    print("Day and Day for the Auction to End: " + date[h].text)
+#date = product.findAll("span", {"class": "s-item__time-end"})
+#for h in range(len(date)):
+#    print("Day and Day for the Auction to End: " + date[h].text)
 
 
-shipping_cost = product.findAll("span", {"class": "s-item__shipping s-item__logisticsCost"})
-print("Shipping Cost: " + shipping_cost[0].text)
+#shipping_cost = product.findAll("span", {"class": "s-item__shipping s-item__logisticsCost"})
+#print("Shipping Cost: " + shipping_cost[0].text)
+
+#filename
+filename = "canonprices.csv"
+f = open(filename, "w") #opening the filename
+
+headers = " Canon EOS Auction Prices\n"
+header_one = "Product_Name, Pricing, Rating \n"
+f.write(headers)
+f.write(header_one)
 
 
 
@@ -87,14 +95,14 @@ for product in ebay_auction_products:
 
 
     product_name = product.div.img["alt"] #name of the products
-    print("\n")
+    #print("\n")
     #print(product)
-    print(product_name)
+    #print(product_name)
 
     #subclass title of the product
     product_sub_title = product.findAll("div", {"class": "s-item__subtitle"})
     subtitle = product_sub_title[0].text
-    print(subtitle)
+    #print(subtitle)
 
     #rating
     #ratings = product.findAll("div", {"class": "s-item__reviews"})
@@ -104,18 +112,24 @@ for product in ebay_auction_products:
     #price of the products now
     price_of_product = product.findAll("span", {"class" : "s-item__price"})
     price = price_of_product[0].text.strip()
-    print(price)
+    #print(price)
 
     bids_now  = product.findAll("span", {"class": "s-item__bids s-item__bidCount"})
-    print(bids_now[0].text)
+    #print(bids_now[0].text)
 
 
     #how many days left for the bid to be done
     days_left = product.findAll("span" , {"class" : "s-item__time-left"})
     days = days_left[0].text
-    print(days)
+    #print(days)
 
     #shipping cost
     shipping_cost = product.findAll("span", {"class": "s-item__shipping s-item__logisticsCost"})
     shipping = shipping_cost[0].text
-    print(shipping)
+    #print(shipping)
+
+
+    print("\nName of Product: " + product_name + "\nOther Information: "+ subtitle + "\nPrice: " + price + "\nNo of Bids: " + bids_now[0].text + "\nDays Left: " + days + "\nShipping Cost: " + shipping + "\n")
+    f.write("\nName of Product: " + product_name + "\nOther Information: " + subtitle + "\nPrice: " + price + "\nNo of Bids: " + bids_now[0].text  + "\nDays Left: " + days +  "\nShipping Cost: " + shipping + "\n")
+
+f.close()
